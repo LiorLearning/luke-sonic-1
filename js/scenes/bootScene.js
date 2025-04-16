@@ -24,7 +24,7 @@ class BootScene extends Phaser.Scene {
       // Hide the loading div from HTML
       document.getElementById('loading').style.display = 'none';
       
-      // Move to the title scene
-      this.scene.start('TitleScene');
+      // Move to the loading scene instead of title scene
+      this.scene.start('LoadingScene');
   }
 }

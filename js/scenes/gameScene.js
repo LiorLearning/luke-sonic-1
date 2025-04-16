@@ -62,10 +62,10 @@ class GameScene extends Phaser.Scene {
       });
       
       // Start background music (after loading it in preload)
-    //   this.sound.play('music', {
-    //       loop: true,
-    //       volume: 0.5
-    //   });
+      this.sound.play('music', {
+          loop: true,
+          volume: 0.5
+      });
   }
   
   update() {
