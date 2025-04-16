@@ -4,6 +4,13 @@ class GameScene extends Phaser.Scene {
       super({ key: 'GameScene' });
   }
   
+  preload() {
+      // Preload background music
+      this.load.audio('music', './assets/music.mp3');
+      this.load.audio('jump', './assets/jump.mp3');
+      this.load.audio('collect', './assets/collect.mp3');
+  }
+  
   create() {
       // Create level
       this.level = new Level(this, 'level1');
@@ -54,11 +61,11 @@ class GameScene extends Phaser.Scene {
           this.ui.updateRingCount(count);
       });
       
-      // Start background music
-      this.sound.play('music', {
-          loop: true,
-          volume: 0.5
-      });
+      // Start background music (after loading it in preload)
+    //   this.sound.play('music', {
+    //       loop: true,
+    //       volume: 0.5
+    //   });
   }
   
   update() {

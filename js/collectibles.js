@@ -12,18 +12,25 @@ class Collectibles {
           ring.setCollideWorldBounds(true);
       });
       
-      // Create ring animation - Fixed by adding multiple frames from 0 to 7
-      this.scene.anims.create({
-          key: 'spin',
-          frames: this.scene.anims.generateFrameNumbers('ring', { start: 0, end: 7 }),
-          frameRate: 10,
-          repeat: -1
-      });
+      // Create ring animation with just a single frame since placeholder only has one
+      if (!this.scene.anims.exists('spin')) {
+          this.scene.anims.create({
+              key: 'spin',
+              frames: this.scene.anims.generateFrameNumbers('ring', { start: 0, end: 0 }),
+              frameRate: 10,
+              repeat: -1
+          });
+      }
       
-      // Play animation on all rings
-      this.group.children.iterate((ring) => {
-          ring.play('spin');
-      });
+      // Play animation on all rings - only if we have real sprite frames
+      // In placeholder mode, we'll just use the static image
+      try {
+          this.group.children.iterate((ring) => {
+              if (ring) ring.play('spin');
+          });
+      } catch (error) {
+          console.log('Using static ring image instead of animation');
+      }
   }
   
   // Generate rings at regular intervals along a platform
@@ -52,7 +59,7 @@ class Collectibles {
       this.scene.physics.add.overlap(player.sprite, this.group, (playerSprite, ring) => {
           ring.disableBody(true, true);
           const ringCount = player.collectRing();
-          this.scene.sound.play('collect');
+        //   this.scene.sound.play('collect');
           this.scene.events.emit('ringCollected', ringCount);
       }, null, this);
   }

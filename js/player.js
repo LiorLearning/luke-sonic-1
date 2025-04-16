@@ -34,36 +34,44 @@ class Player {
   
   createAnimations() {
       // Idle animation
-      this.scene.anims.create({
-          key: 'idle',
-          frames: this.scene.anims.generateFrameNumbers('player', { start: 0, end: 0 }),
-          frameRate: 10,
-          repeat: -1
-      });
+      if (!this.scene.anims.exists('idle')) {
+          this.scene.anims.create({
+              key: 'idle',
+              frames: this.scene.anims.generateFrameNumbers('player', { start: 0, end: 0 }),
+              frameRate: 10,
+              repeat: -1
+          });
+      }
       
       // Run animation
-      this.scene.anims.create({
-          key: 'run',
-          frames: this.scene.anims.generateFrameNumbers('player', { start: 0, end: 0 }),
-          frameRate: 10,
-          repeat: -1
-      });
+      if (!this.scene.anims.exists('run')) {
+          this.scene.anims.create({
+              key: 'run',
+              frames: this.scene.anims.generateFrameNumbers('player', { start: 0, end: 0 }),
+              frameRate: 10,
+              repeat: -1
+          });
+      }
       
       // Jump animation
-      this.scene.anims.create({
-          key: 'jump',
-          frames: this.scene.anims.generateFrameNumbers('player', { start: 0, end: 0 }),
-          frameRate: 10,
-          repeat: 0
-      });
+      if (!this.scene.anims.exists('jump')) {
+          this.scene.anims.create({
+              key: 'jump',
+              frames: this.scene.anims.generateFrameNumbers('player', { start: 0, end: 0 }),
+              frameRate: 10,
+              repeat: 0
+          });
+      }
       
       // Roll animation
-      this.scene.anims.create({
-          key: 'roll',
-          frames: this.scene.anims.generateFrameNumbers('player', { start: 0, end: 0 }),
-          frameRate: 10,
-          repeat: -1
-      });
+      if (!this.scene.anims.exists('roll')) {
+          this.scene.anims.create({
+              key: 'roll',
+              frames: this.scene.anims.generateFrameNumbers('player', { start: 0, end: 0 }),
+              frameRate: 10,
+              repeat: -1
+          });
+      }
   }
   
   update() {
@@ -79,19 +87,19 @@ class Player {
       if (this.cursors.left.isDown || this.wasd.left.isDown) {
           this.sprite.setVelocityX(-this.speed);
           if (!this.isRolling) {
-              this.sprite.anims.play('run', true);
+              this.playAnimation('run');
           }
           this.sprite.flipX = true;
       } else if (this.cursors.right.isDown || this.wasd.right.isDown) {
           this.sprite.setVelocityX(this.speed);
           if (!this.isRolling) {
-              this.sprite.anims.play('run', true);
+              this.playAnimation('run');
           }
           this.sprite.flipX = false;
       } else {
           this.sprite.setVelocityX(0);
           if (!this.isJumping && !this.isRolling) {
-              this.sprite.anims.play('idle', true);
+              this.playAnimation('idle');
           }
       }
       
@@ -99,15 +107,15 @@ class Player {
       if ((this.cursors.up.isDown || this.wasd.up.isDown) && onGround) {
           this.sprite.setVelocityY(this.jumpVelocity);
           this.isJumping = true;
-          this.sprite.anims.play('jump');
-          this.scene.sound.play('jump');
+          this.playAnimation('jump');
+        //   this.scene.sound.play('jump');
       }
       
       // Handle rolling
       if ((this.cursors.down.isDown || this.wasd.down.isDown) && onGround) {
           if (!this.isRolling) {
               this.isRolling = true;
-              this.sprite.anims.play('roll', true);
+              this.playAnimation('roll');
               // Add a slight boost when starting a roll
               const direction = this.sprite.flipX ? -1 : 1;
               this.sprite.setVelocityX(direction * (this.speed * 1.2));
@@ -121,6 +129,17 @@ class Player {
       
       // Update camera to follow player
       this.scene.cameras.main.startFollow(this.sprite, true, 0.08, 0.08);
+  }
+  
+  // Safely play animation, handling any errors for placeholder assets
+  playAnimation(key, ignoreIfPlaying = true) {
+      try {
+          if (this.sprite.anims) {
+              this.sprite.anims.play(key, ignoreIfPlaying);
+          }
+      } catch (error) {
+          console.log(`Using static image instead of ${key} animation`);
+      }
   }
   
   collectRing() {
@@ -143,7 +162,13 @@ class Player {
       } else {
           // Player dies
           this.sprite.setTint(0xff0000);
-          this.sprite.anims.stop();
+          if (this.sprite.anims) {
+              try {
+                  this.sprite.anims.stop();
+              } catch (error) {
+                  console.log('Error stopping animations');
+              }
+          }
           this.sprite.setVelocity(0);
           
           // Disable player controls

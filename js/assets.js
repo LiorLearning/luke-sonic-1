@@ -2,25 +2,25 @@ const assets = {
   sprites: {
       player: {
           key: 'player',
-          path: 'assets/player.png',
+          path: './assets/player.png',
           frameWidth: 50,
           frameHeight: 50
       },
       ring: {
           key: 'ring',
-          path: 'assets/ring.png',
+          path: './assets/ring.png',
           frameWidth: 24,
           frameHeight: 24
       },
       enemy: {
           key: 'enemy',
-          path: 'assets/enemy.png',
+          path: './assets/enemy.png',
           frameWidth: 40,
           frameHeight: 40
       },
       tiles: {
           key: 'tiles',
-          path: 'assets/tiles.png',
+          path: './assets/tiles.png',
           frameWidth: 32,
           frameHeight: 32
       }
@@ -28,31 +28,31 @@ const assets = {
   tilemaps: {
       level1: {
           key: 'level1',
-          path: 'assets/level1.json'
+          path: './assets/level1.json'
       }
   },
   audio: {
       jump: {
           key: 'jump',
-          path: 'assets/jump.mp3'
+          path: './assets/jump.mp3'
       },
       collect: {
           key: 'collect',
-          path: 'assets/collect.mp3'
+          path: './assets/collect.mp3'
       },
       music: {
           key: 'music',
-          path: 'assets/music.mp3'
+          path: './assets/music.mp3'
       }
   },
   images: {
       sky: {
           key: 'sky',
-          path: 'assets/sky.jpeg'
+          path: './assets/sky.jpeg'
       },
       title: {
           key: 'title',
-          path: 'assets/title.jpg'
+          path: './assets/title.jpg'
       }
   }
 };

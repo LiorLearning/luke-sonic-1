@@ -3,6 +3,14 @@ class Enemies {
   constructor(scene) {
       this.scene = scene;
       this.group = scene.physics.add.group();
+      
+      // Create enemy animation once
+      this.scene.anims.create({
+          key: 'enemy-move',
+          frames: [ { key: 'enemy' } ],
+          frameRate: 10,
+          repeat: -1
+      });
   }
   
   createEnemy(x, y, patrolDistance = 200) {
@@ -16,14 +24,7 @@ class Enemies {
       enemy.patrolVelocity = 100;
       enemy.body.velocity.x = enemy.patrolVelocity;
       
-      // Create enemy animation
-      this.scene.anims.create({
-          key: 'enemy-move',
-          frames: this.scene.anims.generateFrameNumbers('enemy', { start: 0, end: 0 }),
-          frameRate: 10,
-          repeat: -1
-      });
-      
+      // Play the animation
       enemy.anims.play('enemy-move', true);
       
       return enemy;
